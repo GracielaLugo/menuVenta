@@ -20,12 +20,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
 
                 card.innerHTML = `
-                    <div class="item-header">
-                        <span class="item-name">${item.producto}</span>
-                        <span class="item-price">${formatter.format(item.precio)}</span>
-                    </div>
-                    <div class="item-details">
-                        <span>Disponible: ${item.cantidad}</span>
+                    ${item.foto ? `<img src="${item.foto}" alt="${item.producto}">` : ''}
+                    <div class="item-content">
+                        <div class="item-header">
+                            <span class="item-name">${item.producto}</span>
+                            <span class="item-price">${formatter.format(item.precio)}</span>
+                        </div>
+                        <div class="item-details">
+                            <span>Disponible: ${item.cantidad}</span>
+                        </div>
                     </div>
                 `;
                 menuContainer.appendChild(card);

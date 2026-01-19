@@ -64,10 +64,7 @@ app.get('/api/menu/:id', async (req, res) => {
 
 // POST /api/menu - Create new item
 app.post('/api/menu', async (req, res) => {
-    const { producto, quantidade, precio } = req.body;
-    // Note: User asked for 'cantidad' in DB, but sometimes sends 'quantity'. 
-    // We stick to 'cantidad' as requested in schema.
-    const cantidad = req.body.cantidad || 0;
+    const { producto, cantidad, precio, foto } = req.body;
 
     if (!producto || !precio) {
         res.status(400).json({ error: 'Please provide producto and precio' });
@@ -77,7 +74,12 @@ app.post('/api/menu', async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('menu_items')
-            .insert([{ producto, cantidad, precio }])
+            .insert([{
+                producto,
+                cantidad: cantidad || 0,
+                precio,
+                foto: foto || null
+            }])
             .select();
 
         if (error) throw error;
@@ -93,11 +95,12 @@ app.post('/api/menu', async (req, res) => {
 
 // PUT /api/menu/:id - Update item
 app.put('/api/menu/:id', async (req, res) => {
-    const { producto, cantidad, precio } = req.body;
+    const { producto, cantidad, precio, foto } = req.body;
     const updates = {};
     if (producto !== undefined) updates.producto = producto;
     if (cantidad !== undefined) updates.cantidad = cantidad;
     if (precio !== undefined) updates.precio = precio;
+    if (foto !== undefined) updates.foto = foto;
 
     try {
         const { data, error } = await supabase
