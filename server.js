@@ -2,18 +2,23 @@ const express = require('express');
 const cors = require('cors');
 const supabase = require('./supabase');
 
+const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Serve frontend files
+// Serve static files with absolute path
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 
-// GET / - Root route (Removed, handled by express.static logic for index.html)
-// logic for index.html will be served automatically at / directory
+// GET / - Root route (Explicitly serve index.html)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // GET /api/menu - Get all items
 app.get('/api/menu', async (req, res) => {
