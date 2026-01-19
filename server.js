@@ -11,6 +11,11 @@ app.use(express.json());
 
 // Routes
 
+// GET / - Root route
+app.get('/', (req, res) => {
+    res.send('Cafeteria API is running. Go to <a href="/api/menu">/api/menu</a> to see the menu.');
+});
+
 // GET /api/menu - Get all items
 app.get('/api/menu', (req, res) => {
     try {
